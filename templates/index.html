@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script>
+        L_NO_TOUCH = false;
+        L_DISABLE_3D = false;
+    </script>
+    <style>html, body {width: 100%; height: 100%; margin: 0; padding: 0;}</style>
+    <style>#map {position: absolute; top: 0; bottom: 0; right: 0; left: 0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+</head>
+<body>
+    <!-- Map container -->
+    <div id="map"></div>
+    
+    <!-- Input form for adding a marker -->
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 1000; background: white; padding: 10px; border-radius: 5px;">
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" placeholder="Enter latitude" />
+        <br>
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" placeholder="Enter longitude" />
+        <br>
+        <button id="addMarkerButton">Add Marker</button>
+    </div>
+
+    <script>
+        // Initialize the map and set its view to Hanoi
+        var map = L.map('map').setView([21.00405, 105.846027], 10);
+
+        // Add the OpenStreetMap tile layer
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Function to add a marker to the map
+        function addMarker(lat, lng) {
+            if (!lat || !lng || isNaN(lat) || isNaN(lng)) {
+                alert("Please enter valid latitude and longitude!");
+                return;
+            }
+
+            // Add a marker to the map
+            L.marker([lat, lng]).addTo(map).bindPopup(`Địa điểm`).openPopup();
+
+            // Center the map on the new marker
+            map.setView([lat, lng], 20);
+        }
+
+        // Add event listener to the "Add Marker" button
+        document.getElementById("addMarkerButton").addEventListener("click", function() {
+            // Get latitude and longitude from input fields
+            var latitude = parseFloat(document.getElementById("latitude").value);
+            var longitude = parseFloat(document.getElementById("longitude").value);
+
+            // Call the addMarker function
+            addMarker(latitude, longitude);
+        });
+    </script>
+</body>
+</html>
